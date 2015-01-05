@@ -8,5 +8,10 @@ pip3 install django==1.7
 pip3 install selenium
 ```
 
+# Vagrant with Digital Ocean
+```
+vagrant up --provider=digital_ocean
+```
+
 # References
 http://chimera.labs.oreilly.com/books/1234000000754/index.html
