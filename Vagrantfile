@@ -15,6 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.vm.box               = 'digital_ocean'
     override.vm.box_url           = 'https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box'
 
+    override.ssh.pty              = true
     override.ssh.username         = ENV['DO_SSH_USERNAME']
     override.ssh.private_key_path = ENV['DO_SSH_KEY']
 
@@ -31,4 +32,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # disable synced_folder
     override.vm.synced_folder "./", "/vagrant", disabled: true
   end
+
+  config.omnibus.chef_version = :latest
 end
