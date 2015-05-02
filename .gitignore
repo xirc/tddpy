@@ -1,8 +1,8 @@
-.python-version
-db.sqlite3
+/.python-version
+/database/db.sqlite3
+/static
 __pycache__
 *.pyc
-static
 
 # Vagrant
 .vagrant
