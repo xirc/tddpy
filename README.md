@@ -1,10 +1,10 @@
 # Requirements
-Python3 + Django1.7 + Selenium 環境の構築
+Python3 + Django1.8 + Selenium 環境の構築
 ```
 cd ${INSTALL_DIRECTORY}
 pyenv virtualenv --python=python3 3.4.2 tdd-dev
 pyenv local tddpy-dev
-pip3 install django==1.7
+pip3 install django==1.8
 pip3 install selenium
 ```
 
