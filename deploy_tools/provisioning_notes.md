@@ -33,5 +33,5 @@ Assume we have a user account at /home/username
   + static
   + virtualenv
 
-# Deployment
+## Deployment
 fab deploy:host=username@hostname
