@@ -7,8 +7,9 @@ import random
 REPO_URL = 'https://xirc@bitbucket.org/xirc/tddpy.git'
 
 def deploy():
-    #site_folder = '/home/%s/sites/%s' % (env.user, env.host)
-    site_folder = '/home/%s/sites/tddpy' % (env.user)
+    if not hasattr(env, 'app'):
+        env.app = 'tddpy'
+    site_folder = '/home/%s/sites/%s' % (env.user, env.app)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
     _update_settings(site_folder, env.host)
