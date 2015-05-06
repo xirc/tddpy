@@ -9,8 +9,8 @@ APP = 'tddpy'
 
 def deploy():
     if hasattr(env, 'staging'):
-        APP = '%s-staging' % (APP,)
-    site_folder = '/home/%s/sites/%s' % (env.user, APP)
+        app = '%s-staging' % (APP,)
+    site_folder = '/home/%s/sites/%s' % (env.user, app)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
     _update_settings(site_folder, env.host)
