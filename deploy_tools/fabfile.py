@@ -31,9 +31,7 @@ def _create_directory_structure_if_necessary(site_folder):
 def _update_settings(site_folder, site_name):
     settings_path = site_folder + '/source/superlists/settings.py'
     sed(settings_path, 'DEBUG = True', 'DEBUG = False')
-    sed(settings_path,
-        'ALLOWED_HOSTS =.+$',
-        'ALLOWED_HOSTS = ["%s"]' % (site_name,))
+    sed(settings_path, 'DOMAIN = "localhost"', 'DOMAIN = "%s"' % (site_name,))
     secret_key_file = site_folder + '/source/superlists/secret_key.py'
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
