@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import Item, List
@@ -32,4 +34,5 @@ def new_list(request):
 
 
 def my_lists(request, email):
-    return render(request, 'my_lists.html')
+    owner = User.objects.get(email=email)
+    return render(request, 'my_lists.html', {'owner': owner})
