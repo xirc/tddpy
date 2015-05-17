@@ -1,4 +1,5 @@
 from django.conf import settings
+from selenium.common.exceptions import NoSuchElementException
 
 from .base import FunctionalTest
 from .server_tools import create_session_on_server
@@ -64,7 +65,5 @@ class MyListsTest(FunctionalTest):
 
         # She logs out. The "My Lists" option disappears
         self.browser.find_element_by_id('id_logout').click()
-        self.assertEqual(
-            self.browser.find_element_by_link_text('My lists'),
-            []
-        )
+        with self.assertRaises(NoSuchElementException):
+            self.browser.find_element_by_link_text('My lists')
