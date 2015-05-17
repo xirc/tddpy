@@ -3,6 +3,7 @@
 /static
 __pycache__
 *.pyc
+/source/functional_tests/screendumps
 
 # Vagrant
 .vagrant
