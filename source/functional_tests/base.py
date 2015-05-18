@@ -6,6 +6,7 @@ import sys
 import time
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
@@ -45,6 +46,9 @@ class FunctionalTest(StaticLiveServerTestCase):
         if self.against_staging:
             reset_database(self.server_host)
 
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
+
         self._fflogname = self._get_logname() + '.log'
         if not os.path.exists(FIREFOX_LOG_LOCATION):
             os.makedirs(FIREFOX_LOG_LOCATION)
@@ -64,6 +68,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                 self.take_screenshot()
                 self.dump_html()
         self.browser.quit()
+        self.display.stop()
         if not self._test_has_failed():
             os.remove(self._fflogname)
         super().tearDown()
