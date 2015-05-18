@@ -17,6 +17,9 @@ DEFAULT_WAIT = 5
 SCREEN_DUMP_LOCATION = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'screendumps'
 )
+FIREFOX_LOG_LOCATION = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'firefox-logs'
+)
 
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -41,7 +44,14 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         if self.against_staging:
             reset_database(self.server_host)
-        self.browser = webdriver.Firefox()
+
+        self._fflogname = self._get_logname() + '.log'
+        if not os.path.exists(FIREFOX_LOG_LOCATION):
+            os.makedirs(FIREFOX_LOG_LOCATION)
+        ffbin = webdriver.firefox.firefox_binary.FirefoxBinary(
+            log_file=open(self._fflogname, 'w')
+        )
+        self.browser = webdriver.Firefox(firefox_binary=ffbin)
         self.browser.implicitly_wait(DEFAULT_WAIT)
 
     def tearDown(self):
@@ -54,6 +64,8 @@ class FunctionalTest(StaticLiveServerTestCase):
                 self.take_screenshot()
                 self.dump_html()
         self.browser.quit()
+        if not self._test_has_failed():
+            os.remove(self._fflogname)
         super().tearDown()
 
     def _test_has_failed(self):
@@ -82,6 +94,15 @@ class FunctionalTest(StaticLiveServerTestCase):
             method=self._testMethodName,
             windowid=self._windowid,
             timestamp=timestamp
+        )
+
+    def _get_logname(self):
+        timestamp = datetime.now().isoformat().replace(':', '.')[:19]
+        return '{folder}/{classname}.{method}-{timestamp}'.format(
+            folder=FIREFOX_LOG_LOCATION,
+            classname=self.__class__.__name__,
+            method=self._testMethodName,
+            timestamp=timestamp,
         )
 
     def check_for_row_in_list_table(self, row_text):
