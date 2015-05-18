@@ -8,8 +8,9 @@ REPO_URL = 'https://xirc@bitbucket.org/xirc/tddpy.git'
 APP = 'tddpy'
 
 def deploy():
+    app = APP
     if hasattr(env, 'staging'):
-        app = '%s-staging' % (APP,)
+        app += '-staging'
     site_folder = '/home/%s/sites/%s' % (env.user, app)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
