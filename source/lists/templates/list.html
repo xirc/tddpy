@@ -13,8 +13,19 @@
 {% endblock %}
 
 {% block extra_content %}
-<form method="POST" action="">
-  <input type="text" name="email" placeholder="your-friend@example.com" />
-  {% csrf_token %}
-</form>
+<div>
+  <h2>List shared with</h2>
+  <ul>
+    {% for user in list.shared_with.all %}
+    <li>{{ user.email }}</li>
+    {% endfor %}
+  </ul>
+</div>
+<div>
+  <h2>Share this list</h2>
+  <form method="POST" action={% url 'share_list' list.id %}>
+    <input type="text" name="email" placeholder="your-friend@example.com" />
+    {% csrf_token %}
+  </form>
+</div>
 {% endblock %}
