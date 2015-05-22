@@ -223,3 +223,13 @@ class ShareListTest(TestCase):
         list_ = List.objects.create()
         response = self.client.post('/lists/%d/share' % (list_.id,))
         self.assertRedirects(response, '/lists/%d/' % (list_.id,))
+
+    def test_sharing(self):
+        list_ = List.objects.create()
+        user = User.objects.create(email='a@b.com')
+
+        request = HttpRequest()
+        request.POST['email'] = user.email
+        share_list(request, list_.id)
+
+        self.assertIn(user, list_.shared_with.all())
