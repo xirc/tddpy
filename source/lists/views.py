@@ -37,4 +37,5 @@ def my_lists(request, email):
 
 
 def share_list(request, list_id):
-    pass
+    list_ = List.objects.get(id=list_id)
+    return redirect(list_)
