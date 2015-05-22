@@ -14,10 +14,18 @@
 
 {% block extra_content %}
 <div>
-  <h2>List shared with</h2>
+  <h2>Be owned by</h2>
+  {% if list.owner %}
+  <div id="id_list_owner">{{ list.owner.email }}</div>
+  {% else %}
+  <div id="id_list_owner">Anonymouns</div>
+  {% endif %}
+</div>
+<div>
+  <h2>List share with</h2>
   <ul>
     {% for user in list.shared_with.all %}
-    <li>{{ user.email }}</li>
+    <li class="list-sharee">{{ user.email }}</li>
     {% endfor %}
   </ul>
 </div>
