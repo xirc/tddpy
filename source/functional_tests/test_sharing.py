@@ -19,7 +19,7 @@ class SharingTest(FunctionalTest):
         self.addCleanup(lambda: quit_if_possible(edith_browser))
 
         # Her friend Oniciferous is also hanging out on the lists
-        oni_browser = webdriver.Firefox()
+        oni_browser = self.make_browser()
         self.addCleanup(lambda: quit_if_possible(oni_browser))
         self.browser = oni_browser
         self.create_pre_authenticated_session('oniciferous@example.com')

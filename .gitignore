@@ -4,7 +4,6 @@
 __pycache__
 *.pyc
 /source/functional_tests/screendumps
-/source/functional_tests/firefox-logs
 
 # Vagrant
 .vagrant

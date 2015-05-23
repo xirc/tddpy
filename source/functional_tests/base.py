@@ -3,6 +3,8 @@
 from datetime import datetime
 import os
 import sys
+from tempfile import TemporaryFile
+import tempfile
 import time
 
 from django.conf import settings
@@ -19,9 +21,6 @@ from .management.commands.create_session import create_pre_authenticated_session
 DEFAULT_WAIT = 5
 SCREEN_DUMP_LOCATION = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'screendumps'
-)
-FIREFOX_LOG_LOCATION = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'firefox-logs'
 )
 
 
@@ -51,13 +50,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.display = Display(visible=0, size=(1024, 768))
         self.display.start()
 
-        self._fflogname = self._get_logname() + '.log'
-        if not os.path.exists(FIREFOX_LOG_LOCATION):
-            os.makedirs(FIREFOX_LOG_LOCATION)
-        ffbin = webdriver.firefox.firefox_binary.FirefoxBinary(
-            log_file=open(self._fflogname, 'w')
-        )
-        self.browser = webdriver.Firefox(firefox_binary=ffbin)
+        self.browser = self.make_browser()
         self.browser.implicitly_wait(DEFAULT_WAIT)
 
     def tearDown(self):
@@ -71,8 +64,6 @@ class FunctionalTest(StaticLiveServerTestCase):
                 self.dump_html()
         self.browser.quit()
         self.display.stop()
-        if not self._test_has_failed():
-            os.remove(self._fflogname)
         super().tearDown()
 
     def _test_has_failed(self):
@@ -111,6 +102,12 @@ class FunctionalTest(StaticLiveServerTestCase):
             method=self._testMethodName,
             timestamp=timestamp,
         )
+
+    def make_browser(self):
+        ffbin = webdriver.firefox.firefox_binary.FirefoxBinary(
+            log_file=TemporaryFile()
+        )
+        return webdriver.Firefox(firefox_binary=ffbin)
 
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
