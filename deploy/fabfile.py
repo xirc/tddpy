@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from fabric.contrib.files import append, exists, sed
-from fabric.api import env, local, run
+from fabric.api import env, local, run, sudo
 import random
 
 REPO_URL = 'https://xirc@bitbucket.org/xirc/tddpy.git'
@@ -60,8 +60,12 @@ def _update_database(site_folder):
 def _update_systemd_conf(site_folder, app_name):
     template_path = site_folder + '/deploy/gunicorn.template.service'
     service_name = 'gunicorn-{}.service'.format(app_name)
-    conf_path = '/etc/systemd/system/{}'.format(service_name)
-    run('cp -a {} {}'.format(template_path, conf_path))
-    sed(conf_path, '{APP}', app_name)
-    run('systemctl daemon-reload')
-    run('systemctl restart {}'.format(service_name))
+    service_path = '/etc/systemd/system/{}'.format(service_name)
+    tmp_path = site_folder + '/deploy/{}'.format(service_name)
+
+    run('cp -a {} {}'.format(template_path, tmp_path))
+    sed(tmp_path, '{APP}', app_name)
+    sudo('mv {} {}'.format(tmp_path, service_path))
+
+    sudo('systemctl daemon-reload')
+    sudo('systemctl restart {}'.format(service_name))
