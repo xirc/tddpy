@@ -14,6 +14,7 @@ def deploy():
         print('set=port={YOUR_APP_PORT} is required')
         exit(1)
     site_folder = '/home/%s/sites/%s' % (env.user, env.app)
+    _set_permission(env.user)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
     _update_settings(site_folder, env.host)
@@ -22,6 +23,10 @@ def deploy():
     _update_database(site_folder)
     _update_systemd_conf(site_folder, env.app)
     _update_nginx_conf(site_folder, env.app, env.app_port)
+
+def _set_permission(user):
+    sudo('usermod -a -G xirc nginx')
+    sudo('chmod 750 /home/{}'.format(user))
 
 def _get_latest_source(site_folder):
     if exists(site_folder + '/.git'):
