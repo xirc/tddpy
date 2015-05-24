@@ -65,16 +65,16 @@ def _update_database(site_folder):
 
 def _update_systemd_conf(site_folder, service_name):
     template_path = site_folder + '/deploy/gunicorn.template.service'
-    service_name = 'gunicorn-{}.service'.format(service_name)
-    service_path = '/etc/systemd/system/{}'.format(service_name)
-    tmp_path = site_folder + '/deploy/{}'.format(service_name)
+    systemd_service_name = 'gunicorn-{}.service'.format(service_name)
+    service_path = '/etc/systemd/system/{}'.format(systemd_service_name)
+    tmp_path = site_folder + '/deploy/{}'.format(systemd_service_name)
 
     run('cp -a {} {}'.format(template_path, tmp_path))
     sed(tmp_path, '\{SERVICE_NAME\}', service_name)
     sudo('mv {} {}'.format(tmp_path, service_path))
 
     sudo('systemctl daemon-reload')
-    sudo('systemctl restart {}'.format(service_name))
+    sudo('systemctl restart {}'.format(systemd_service_name))
 
 def _update_nginx_conf(site_folder, service_name, service_port):
     sudo('cp -a {}/deploy/nginx.conf /etc/nginx/nginx.conf'.format(site_folder))
