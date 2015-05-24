@@ -7,7 +7,6 @@ from fabric.api import env, local, run, sudo
 
 SERVICE_NAME = 'tddpy'
 SERVICE_PORT = '80'
-REPO_URL = 'https://xirc@bitbucket.org/xirc/tddpy.git'
 
 def deploy():
     site_folder = '/home/%s/sites/%s' % (env.user, SERVICE_NAME)
@@ -29,7 +28,10 @@ def _get_latest_source(site_folder):
     if exists(site_folder + '/.git'):
         run('cd %s && git fetch' % (site_folder,))
     else:
-        run('git clone %s %s' % (REPO_URL, site_folder))
+        repo_url = local(
+            "git remote -v | grep deploy | uniq | awk -e '{print $2}'",
+            capture=True)
+        run('git clone %s %s' % (repo_url, site_folder))
     current_commit = local('git log -n 1 --format=%H', capture=True)
     run('cd %s && git reset --hard %s' % (site_folder, current_commit))
 
