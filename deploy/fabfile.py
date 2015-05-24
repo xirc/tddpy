@@ -64,7 +64,7 @@ def _update_systemd_conf(site_folder, app_name):
     tmp_path = site_folder + '/deploy/{}'.format(service_name)
 
     run('cp -a {} {}'.format(template_path, tmp_path))
-    sed(tmp_path, '{APP}', app_name)
+    sed(tmp_path, '\{APP\}', app_name)
     sudo('mv {} {}'.format(tmp_path, service_path))
 
     sudo('systemctl daemon-reload')
