@@ -9,5 +9,9 @@ __pycache__
 /deploy/.deploy
 
 # Vagrant
-.vagrant
-.env
+/.vagrant
+/.env
+
+# CI
+/ci/.vagrant
+/ci/.env
