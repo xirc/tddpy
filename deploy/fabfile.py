@@ -85,3 +85,5 @@ def _update_nginx_conf(site_folder, app_name, app_port):
     sudo('mv {} {}'.format(tmp_path, conf_path))
 
     sudo('systemctl reload nginx')
+    sudo('firewall-cmd --permanent --add-port={}/tcp'.format(app_port))
+    sudo('firewall-cmd --reload')
