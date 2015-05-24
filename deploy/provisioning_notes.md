@@ -14,24 +14,22 @@ e.g., on Fedora 20:
 
 
 ## Nginx Virtual Host config
-* see nginx.template.conf
-* replace SITENAME with, e.g., staging.mydomain.com
+* see nginx.template.conf and nginx.conf
+* replace SERVICE_NAME with, e.g., tddpy
+* replace SERVICE_PORT with, e.g., 80
 
 
 ## Systemd job
 * see gunicorn-systemd.template.conf
-* replace SITENAME with, e.g., staging.mydomain.com
+* replace SERVICE_NAME with, e.g., tddpy
 
 
 ## Folder structure
-Assume we have a user account at /home/username
-/home/username
+Assume we have a user account at /home/USERNAME
+/home/USERNAME
 * sites
  - SITENAME
   + database
   + source
   + static
   + virtualenv
-
-## Deployment
-fab deploy:host=username@hostname

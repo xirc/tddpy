@@ -22,9 +22,3 @@ functional-test: setup-env
 unit-test-js:
 	cd source && phantomjs superlists/static/tests/runner.js accounts/static/tests/tests.html
 	cd source && phantomjs superlists/static/tests/runner.js lists/static/tests/tests.html
-
-# deploy
-deploy:
-	cd deploy && ./deploy.sh
-deploy-staging:
-	cd deploy && ./deploy-staging.sh
