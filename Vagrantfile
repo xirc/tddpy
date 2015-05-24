@@ -39,14 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :fabric do |fabric|
-    fabric.fabric_path = "fab --set=app=tddpy,app_port=80"
     fabric.fabfile_path  = "./deploy/deploy.py"
-    fabric.tasks = ["deploy"]
-  end
-
-  config.vm.provision :fabric do |fabric|
-    fabric.fabric_path = "fab --set=app=tddpy-staging,app_port=8000"
-    fabric.fabfile_path = "./deploy/deploy.py"
     fabric.tasks = ["deploy"]
   end
 
