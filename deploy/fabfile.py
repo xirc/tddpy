@@ -5,13 +5,12 @@ from fabric.api import env, local, run
 import random
 
 REPO_URL = 'https://xirc@bitbucket.org/xirc/tddpy.git'
-APP = 'tddpy'
 
 def deploy():
-    app = APP
-    if hasattr(env, 'staging'):
-        app += '-staging'
-    site_folder = '/home/%s/sites/%s' % (env.user, app)
+    if not hasattr(env, 'app'):
+        print('set=app={YOUR_APP_NAME} is reuired')
+        exit(1)
+    site_folder = '/home/%s/sites/%s' % (env.user, env.app)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
     _update_settings(site_folder, env.host)
