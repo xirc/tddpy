@@ -17,6 +17,7 @@ def deploy():
     _update_virtualenv(site_folder)
     _update_static_files(site_folder)
     _update_database(site_folder)
+    _update_systemd_conf(site_folder, env.app)
 
 def _get_latest_source(site_folder):
     if exists(site_folder + '/.git'):
@@ -55,3 +56,12 @@ def _update_static_files(site_folder):
 def _update_database(site_folder):
     run('cd %s/source && ../virtualenv/bin/python3 manage.py migrate --noinput' %
             (site_folder,))
+
+def _update_systemd_conf(site_folder, app_name):
+    template_path = site_folder + '/deploy/gunicorn.template.service'
+    service_name = 'gunicorn-{}.service'.format(app_name)
+    conf_path = '/etc/systemd/system/{}'.format(service_name)
+    run('cp -a {} {}'.format(template_path, conf_path))
+    sed(conf_path, '{APP}', app_name)
+    run('systemctl daemon-reload')
+    run('systemctl restart {}'.format(service_name))
