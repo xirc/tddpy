@@ -33,5 +33,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.vm.synced_folder "./", "/vagrant", disabled: true
   end
 
-  config.omnibus.chef_version = :latest
+  config.vm.provision :fabric do |fabric|
+    fabric.fabfile_path = "./deploy/provision.py"
+    fabric.tasks = ["provision"]
+  end
+
+  config.vm.provision :fabric do |fabric|
+    fabric.fabric_path = "fab --set=app=tddpy,app_port=80"
+    fabric.fabfile_path  = "./deploy/deploy.py"
+    fabric.tasks = ["deploy"]
+  end
+
+  config.vm.provision :fabric do |fabric|
+    fabric.fabric_path = "fab --set=app=tddpy-staging,app_port=8000"
+    fabric.fabfile_path = "./deploy/deploy.py"
+    fabric.tasks = ["deploy"]
+  end
+
 end
