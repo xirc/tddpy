@@ -1,5 +1,6 @@
 # Requirements
 Python3 + Django + Selenium + etc... 環境の構築
+
 ```
 cd ${INSTALL_DIRECTORY}
 pyenv virtualenv --python=python3 3.4.2 tddpy-dev
@@ -10,36 +11,33 @@ pip3 install -r test_requirements.txt
 
 
 # Vagrant with Digital Ocean
-1. デプロイで参照するリモートブランチを作成する
+デプロイで参照するリモートブランチを作成し、インスタンスを起動する。
+
 ```
 git remote add {HTTPS_URL}
-```
-
-2. インスタンスを起動する
-```
 vagrant up --provider=digital_ocean --provision
 ```
 
-3. ブラウザでサーバにアクセスする
+起動後はブラウザでサーバにアクセスするか、
+sshコマンドでログインする。
+
+```
+vagrant ssh
+```
 
 
 # Run tests
-* Run all tests
+テストを実行する
+
 ```
-make test
+make test                  # Run all tests
 ```
 
-* Run unit test
+個々のテストを実行する
 ```
-  make unit-test
-```
-* Run unit test for JavaScript
-```
-  make unit-test-js
-```
-* Run functional test
-```
-  make functional-test
+make unit-test             # Run unit tests
+make unit-test-js          # Run unit tests corresponding to JavaScript
+make functional-test       # Run functional tests
 ```
 
 
