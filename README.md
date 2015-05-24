@@ -1,8 +1,8 @@
 # Requirements
-Python3 + Django1.8 + Selenium 環境の構築
+Python3 + Django + Selenium + etc... 環境の構築
 ```
 cd ${INSTALL_DIRECTORY}
-pyenv virtualenv --python=python3 3.4.2 tdd-dev
+pyenv virtualenv --python=python3 3.4.2 tddpy-dev
 pyenv local tddpy-dev
 pip3 install -r requirements.txt
 pip3 install -r test_requirements.txt
