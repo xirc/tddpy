@@ -1,19 +1,16 @@
 #!/usr/bin/env python
 
-from fabric.contrib.files import append, exists, sed
-from fabric.api import env, local, run, sudo
 import random
 
+from fabric.contrib.files import append, exists, sed
+from fabric.api import env, local, run, sudo
+
+SERVICE_NAME = 'tddpy'
+SERVICE_PORT = '80'
 REPO_URL = 'https://xirc@bitbucket.org/xirc/tddpy.git'
 
 def deploy():
-    if not hasattr(env, 'app'):
-        print('set=app={YOUR_APP_NAME} is reuired')
-        exit(1)
-    if not hasattr(env, 'app_port'):
-        print('set=port={YOUR_APP_PORT} is required')
-        exit(1)
-    site_folder = '/home/%s/sites/%s' % (env.user, env.app)
+    site_folder = '/home/%s/sites/%s' % (env.user, SERVICE_NAME)
     _set_permission(env.user)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
@@ -21,8 +18,8 @@ def deploy():
     _update_virtualenv(site_folder)
     _update_static_files(site_folder)
     _update_database(site_folder)
-    _update_systemd_conf(site_folder, env.app)
-    _update_nginx_conf(site_folder, env.app, env.app_port)
+    _update_systemd_conf(site_folder, SERVICE_NAME)
+    _update_nginx_conf(site_folder, SERVICE_NAME, SERVICE_PORT)
 
 def _set_permission(user):
     sudo('usermod -a -G xirc nginx')
