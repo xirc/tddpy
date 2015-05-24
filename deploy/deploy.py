@@ -63,31 +63,31 @@ def _update_database(site_folder):
     run('cd %s/source && ../virtualenv/bin/python3 manage.py migrate --noinput' %
             (site_folder,))
 
-def _update_systemd_conf(site_folder, app_name):
+def _update_systemd_conf(site_folder, service_name):
     template_path = site_folder + '/deploy/gunicorn.template.service'
-    service_name = 'gunicorn-{}.service'.format(app_name)
+    service_name = 'gunicorn-{}.service'.format(service_name)
     service_path = '/etc/systemd/system/{}'.format(service_name)
     tmp_path = site_folder + '/deploy/{}'.format(service_name)
 
     run('cp -a {} {}'.format(template_path, tmp_path))
-    sed(tmp_path, '\{APP\}', app_name)
+    sed(tmp_path, '\{SERVICE_NAME\}', service_name)
     sudo('mv {} {}'.format(tmp_path, service_path))
 
     sudo('systemctl daemon-reload')
     sudo('systemctl restart {}'.format(service_name))
 
-def _update_nginx_conf(site_folder, app_name, app_port):
+def _update_nginx_conf(site_folder, service_name, service_port):
     sudo('cp -a {}/deploy/nginx.conf /etc/nginx/nginx.conf'.format(site_folder))
 
     template_path = site_folder + '/deploy/nginx.template.conf'
-    conf_path = '/etc/nginx/conf.d/{}.conf'.format(app_name)
-    tmp_path = site_folder + '/deploy/{}.conf'.format(app_name)
+    conf_path = '/etc/nginx/conf.d/{}.conf'.format(service_name)
+    tmp_path = site_folder + '/deploy/{}.conf'.format(service_name)
 
     run('cp -a {} {}'.format(template_path, tmp_path))
-    sed(tmp_path, '\{APP\}', app_name)
-    sed(tmp_path, '\{PORT\}', app_port)
+    sed(tmp_path, '\{SERVICE_NAME\}', service_name)
+    sed(tmp_path, '\{SERVICE_PORT\}', service_port)
     sudo('mv {} {}'.format(tmp_path, conf_path))
 
     sudo('systemctl reload nginx')
-    sudo('firewall-cmd --permanent --add-port={}/tcp'.format(app_port))
+    sudo('firewall-cmd --permanent --add-port={}/tcp'.format(service_port))
     sudo('firewall-cmd --reload')
