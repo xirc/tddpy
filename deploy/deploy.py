@@ -80,6 +80,8 @@ def _update_systemd_conf(site_folder, app_name):
     sudo('systemctl restart {}'.format(service_name))
 
 def _update_nginx_conf(site_folder, app_name, app_port):
+    sudo('cp -a {}/deploy/nginx.conf /etc/nginx/nginx.conf'.format(site_folder))
+
     template_path = site_folder + '/deploy/nginx.template.conf'
     conf_path = '/etc/nginx/conf.d/{}.conf'.format(app_name)
     tmp_path = site_folder + '/deploy/{}.conf'.format(app_name)
