@@ -25,6 +25,6 @@ unit-test-js:
 
 # deploy
 deploy:
-	cd deploy_tools && ./deploy.sh
+	cd deploy && ./deploy.sh
 deploy-staging:
-	cd deploy_tools && ./deploy-staging.sh
+	cd deploy && ./deploy-staging.sh
