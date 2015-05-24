@@ -8,6 +8,7 @@ pip3 install -r requirements.txt
 pip3 install -r test_requirements.txt
 ```
 
+
 # Vagrant with Digital Ocean
 1. デプロイで参照するリモートブランチを作成する
 ```
@@ -16,10 +17,11 @@ git remote add {HTTPS_URL}
 
 2. インスタンスを起動する
 ```
-vagrant up --provider=digital_ocean
+vagrant up --provider=digital_ocean --provision
 ```
 
 3. ブラウザでサーバにアクセスする
+
 
 # Run tests
 * Run all tests
@@ -40,12 +42,14 @@ make test
   make functional-test
 ```
 
+
 # Run local server
 ローカルでサーバを実行する
 ```
 cd ${INSTALL_DIRECTORY}/source
 python manage.py runserver
 ```
+
 
 # References
 http://chimera.labs.oreilly.com/books/1234000000754/index.html
