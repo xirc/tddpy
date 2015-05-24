@@ -10,6 +10,9 @@ def deploy():
     if not hasattr(env, 'app'):
         print('set=app={YOUR_APP_NAME} is reuired')
         exit(1)
+    if not hasattr(env, 'app_port'):
+        print('set=port={YOUR_APP_PORT} is required')
+        exit(1)
     site_folder = '/home/%s/sites/%s' % (env.user, env.app)
     _get_latest_source(site_folder)
     _create_directory_structure_if_necessary(site_folder)
@@ -18,6 +21,7 @@ def deploy():
     _update_static_files(site_folder)
     _update_database(site_folder)
     _update_systemd_conf(site_folder, env.app)
+    _update_nginx_conf(site_folder, env.app, env.app_port)
 
 def _get_latest_source(site_folder):
     if exists(site_folder + '/.git'):
@@ -69,3 +73,15 @@ def _update_systemd_conf(site_folder, app_name):
 
     sudo('systemctl daemon-reload')
     sudo('systemctl restart {}'.format(service_name))
+
+def _update_nginx_conf(site_folder, app_name, app_port):
+    template_path = site_folder + '/deploy/nginx.template.conf'
+    conf_path = '/etc/nginx/conf.d/{}.conf'.format(app_name)
+    tmp_path = site_folder + '/deploy/{}.conf'.format(app_name)
+
+    run('cp -a {} {}'.format(template_path, tmp_path))
+    sed(tmp_path, '\{APP\}', app_name)
+    sed(tmp_path, '\{PORT\}', app_port)
+    sudo('mv {} {}'.format(tmp_path, conf_path))
+
+    sudo('systemctl reload nginx')
