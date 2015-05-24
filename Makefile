@@ -3,9 +3,6 @@ TARGETS_TEST = test unit-test functional-test unit-test-js
 TARGETS_DEPLOY = deploy deploy-staging
 .PHONY= default ${TARGETS_SETUP} ${TARGETS_TEST} ${TARGETS_DEPLOY}
 
-HOST=128.199.73.31
-USER=xirc
-
 default:
 	exit
 
@@ -28,6 +25,6 @@ unit-test-js:
 
 # deploy
 deploy:
-	cd deploy_tools && fab deploy --host=${USER}@${HOST}
+	cd deploy_tools && ./deploy.sh
 deploy-staging:
-	cd deploy_tools && fab deploy --host=${USER}@${HOST} --set=staging=True
+	cd deploy_tools && ./deploy-staging.sh

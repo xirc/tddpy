@@ -5,6 +5,9 @@ __pycache__
 *.pyc
 /source/functional_tests/screendumps
 
+# deploy
+/deploy_tools/.deploy
+
 # Vagrant
 .vagrant
 .env
