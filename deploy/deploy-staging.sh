@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-source .deploy
+source .env
 fab deploy --host=${DEPLOY_USER}@${DEPLOY_HOST} --set=staging=True
